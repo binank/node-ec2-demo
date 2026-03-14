@@ -41,9 +41,9 @@ jobs:
 
             # Pull latest code (first time: clone it)
             if [ -d ".git" ]; then
-              git pull origin main
+              git pull origin master
             else
-              git clone https://github.com/YOUR_USERNAME/node-ec2-demo.git .
+              git clone https://github.com/binank/node-ec2-demo.git .
             fi
 
             # Install/update dependencies
