@@ -1,0 +1,61 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master           # triggers on every push to main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Run tests
+      - name: Run tests
+        run: npm test
+
+      # 5. Deploy to EC2 via SSH
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # Navigate to app directory
+            cd /home/ubuntu/app
+
+            # Pull latest code (first time: clone it)
+            if [ -d ".git" ]; then
+              git pull origin main
+            else
+              git clone https://github.com/YOUR_USERNAME/node-ec2-demo.git .
+            fi
+
+            # Install/update dependencies
+            npm install --production
+
+            # Restart or start app with PM2
+            pm2 describe app > /dev/null 2>&1
+            if [ $? -eq 0 ]; then
+              pm2 restart app
+            else
+              pm2 start index.js --name app
+            fi
+
+            # Save PM2 process list to survive reboots
+            pm2 save
