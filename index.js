@@ -19,9 +19,3 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
-```
-
-**`.gitignore`**
-```
-node_modules/
-.env
