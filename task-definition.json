@@ -8,7 +8,7 @@
   "containerDefinitions": [
     {
       "name": "node-app",
-      "image": "YOUR_ACCOUNT_ID.dkr.ecr.ap-south-1.amazonaws.com/node-ec2-demo:latest",
+      "image": "294069346242.dkr.ecr.ap-south-1.amazonaws.com/node-ec2-demo:latest",
       "portMappings": [
         {
           "containerPort": 3000,
@@ -20,7 +20,7 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/node-app",
-          "awslogs-region": "ap-south-1",
+          "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
       },
