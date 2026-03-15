@@ -15,7 +15,7 @@ env:
 jobs:
   deploy:
     name: Build, Push & Deploy
-    environment: production
+    runs-on: ubuntu-latest
 
     steps:
       # 1. Check out the code
