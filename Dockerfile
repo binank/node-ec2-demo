@@ -1,0 +1,22 @@
+# Use official Node.js 18 slim image
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Copy app source
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Health check for ECS
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD wget -qO- http://localhost:3000/health || exit 1
+
+# Start app
+CMD ["node", "index.js"]
